@@ -18,20 +18,22 @@
 # limitations under the License.
 #
 
-msi_checksum = node['python']['checksum']
+checksum = node['python']['checksum']
 version = node['python']['version']
 
-is_64_bit = ENV.has_key?('ProgramFiles(x86)')
-msi_file_name = "python-#{version}.amd64.msi" if is_64_bit
-msi_file_name = "python-#{version}.msi" unless is_64_bit
+if kernel['machine'] =~ /x86_64/
+  msi_file_name = "python-#{version}.amd64.msi"
+else
+  msi_file_name = "python-#{version}.msi"
+end
 
-msi_url = "#{node['python']['url']}/#{version}/#{msi_file_name}"
-msi_local = cached_file(msi_url, msi_checksum)
+package_name = "Python #{version}"
+url = "#{node['python']['url']}/#{version}/#{msi_file_name}"
 
-windows_package "Python #{version}" do
+windows_package package_name do
   action :install
-  source msi_local
-  checksum msi_checksum
+  source url
+  checksum checksum
   options 'ALLUSERS=1' #Workaround for http://bugs.python.org/issue16188
   installer_type :msi
 end
