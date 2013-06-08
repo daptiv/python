@@ -21,7 +21,7 @@
 checksum = node['python']['checksum']
 version = node['python']['version']
 
-if kernel['machine'] =~ /x86_64/
+if node['kernel']['machine'] =~ /x86_64/
   msi_file_name = "python-#{version}.amd64.msi"
 else
   msi_file_name = "python-#{version}.msi"
