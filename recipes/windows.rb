@@ -35,5 +35,6 @@ windows_package package_name do
   source url
   checksum checksum
   options 'ALLUSERS=1' #Workaround for http://bugs.python.org/issue16188
+  timeout 4800
   installer_type :msi
 end
